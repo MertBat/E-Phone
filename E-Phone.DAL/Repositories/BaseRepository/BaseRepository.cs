@@ -21,27 +21,22 @@ namespace E_Phone.DAL.Repositories.BaseRepository
             _set = context.Set<T>();
         }
 
-        public async Task<bool> CreateAsync(T entity)
+        public async Task CreateAsync(T entity)
         {
             await _set.AddAsync(entity);
-            return await _context.SaveChangesAsync() > 0;
+            await _context.SaveChangesAsync();
         }
 
-        public bool Update(T entity)
+        public void Update(T entity)
         {
             _set.Update(entity);
-            return _context.SaveChanges() > 0;
+             _context.SaveChanges();
         }
 
-        public bool Delete(int id)
+        public void Delete(T entity)
         {
-            T entity = _set.Find(id);
-
-            if (entity == null)
-                throw new ArgumentException("Marka bulunamadı");
-
             _set.Remove(entity);
-            return _context.SaveChanges() > 0;
+            _context.SaveChanges();
         }
 
         public async Task<T> GetAsync(Expression<Func<T, bool>> expression) => await _set.Where(expression).FirstOrDefaultAsync();

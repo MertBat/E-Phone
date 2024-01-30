@@ -9,12 +9,8 @@ namespace E_Phone.DAL.Context
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext()
-        {
-            
-        }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-       
+
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Model> Models { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -23,14 +19,14 @@ namespace E_Phone.DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Brand>().Property(b=> b.BrandName).HasMaxLength(50);
+            modelBuilder.Entity<Brand>().Property(b => b.BrandName).HasMaxLength(50);
 
             modelBuilder.Entity<Model>().Property(m => m.ModelName).HasMaxLength(50);
 
             modelBuilder.Entity<Order>().Property(o => o.TotalPrice).IsRequired();
             modelBuilder.Entity<Order>().Property(o => o.OrderCount).IsRequired();
 
-            modelBuilder.Entity<Core.Entities.Version>().Property(p=> p.StorageCapacity).IsRequired();
+            modelBuilder.Entity<Core.Entities.Version>().Property(p => p.StorageCapacity).IsRequired();
             modelBuilder.Entity<Core.Entities.Version>().Property(p => p.price).IsRequired();
             modelBuilder.Entity<Core.Entities.Version>().Property(p => p.Stock).IsRequired();
 

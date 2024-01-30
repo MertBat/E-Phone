@@ -13,6 +13,6 @@ namespace E_Phone.BLL.Services.Abstract
         Task<GetSingleBrandDTO> GetBrandAsync(int id);
         Task UpdateBrandAsync(UpdateBrandDTO brand, int id);
         Task CreateBrandAsync(CreateBrandDTO brand);
-        void DeleteBrand(int id);
+        Task DeleteBrand(int id);
     }
 }

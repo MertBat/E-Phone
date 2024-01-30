@@ -9,9 +9,9 @@ namespace E_Phone.Core.IRepositories.BaseRepository
 {
     public interface IBaseRepository<T> where T : class
     {
-        Task<bool> CreateAsync(T entity);
-        bool Update(T entity);
-        bool Delete(int id);
+        Task CreateAsync(T entity);
+        void Update(T entity);
+        void Delete(T entity);
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
         Task<T> GetAsync(Expression<Func<T, bool>> expression);
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>> expression = null);

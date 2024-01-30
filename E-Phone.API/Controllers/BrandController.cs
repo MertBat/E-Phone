@@ -1,12 +1,14 @@
 ﻿using E_Phone.BLL.DTOs.Brand;
 using E_Phone.BLL.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Phone.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("brands")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "User")]
     public class BrandController : ControllerBase
     {
         private readonly IBrandService _brandService;
@@ -19,35 +21,40 @@ namespace E_Phone.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllBrands()
         {
-            List<GetBrandsDTO> brands = await _brandService.GetAllBrandsAsync();
-            return Ok(brands);
+            List<GetBrandsDTO> getBrandsDTOs = await _brandService.GetAllBrandsAsync();
+
+            return Ok(getBrandsDTOs);
         }
 
         [HttpGet("{brandId}")]
         public async Task<IActionResult> GetBrand(int brandId)
         {
-            GetSingleBrandDTO brand = await _brandService.GetBrandAsync(brandId);
-            return Ok(brand);
+            GetSingleBrandDTO getSingleBrandDTO = await _brandService.GetBrandAsync(brandId);
+
+            return Ok(getSingleBrandDTO);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBrand(CreateBrandDTO createBrand)
+        public async Task<IActionResult> CreateBrand([FromBody] CreateBrandDTO createBrandDTO)
         {
-            await _brandService.CreateBrandAsync(createBrand);
+            await _brandService.CreateBrandAsync(createBrandDTO);
+
             return Ok();
         }
 
         [HttpPut("{brandId}")]
-        public async Task<IActionResult> UpdateBrand(int brandId, UpdateBrandDTO updateBrand)
+        public async Task<IActionResult> UpdateBrand(int brandId, [FromBody] UpdateBrandDTO updateBrandDTO)
         {
-            await _brandService.UpdateBrandAsync(updateBrand, brandId);
+            await _brandService.UpdateBrandAsync(updateBrandDTO, brandId);
+
             return Ok();
         }
 
         [HttpDelete("{brandId}")]
-        public async Task<IActionResult> DeleteBrand(int brandId)
+        public IActionResult DeleteBrand(int brandId)
         {
             _brandService.DeleteBrand(brandId);
+
             return Ok();
         }
     }

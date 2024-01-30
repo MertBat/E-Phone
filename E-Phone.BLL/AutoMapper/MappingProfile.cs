@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
+using E_Phone.BLL.DTOs.Auth;
 using E_Phone.BLL.DTOs.Brand;
+using E_Phone.BLL.DTOs.Model;
+using E_Phone.BLL.DTOs.Order;
+using E_Phone.BLL.DTOs.Version;
 using E_Phone.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,10 +17,23 @@ namespace E_Phone.BLL.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<GetBrandsDTO, Brand>().ReverseMap();
-            CreateMap<CreateBrandDTO, Brand>().ReverseMap();
-            CreateMap<GetSingleBrandDTO, Brand>().ReverseMap();
-            CreateMap<UpdateBrandDTO, Brand>().ReverseMap();
+            CreateMap<Brand, GetBrandsDTO>();
+            CreateMap<CreateBrandDTO, Brand>();
+            CreateMap<Brand, GetSingleBrandDTO>();
+            CreateMap<UpdateBrandDTO, Brand>();
+
+            CreateMap<Model, GetModelsDTO>();
+            CreateMap<Model, GetSingleModelDTO>();
+
+            CreateMap<Core.Entities.Version, GetVersionsDTO>();
+            CreateMap<Core.Entities.Version, GetSingleVersionDTO>();
+
+            CreateMap<RegisterDTO, User>();
+            CreateMap<User, GetUserDTO>();
+
+            CreateMap<Order, GetOrdersDTO>();
+            CreateMap<Order, GetUserOrdersDTO>();
+            CreateMap<Order, GetSingleOrderDTO>();
         }
     }
 }

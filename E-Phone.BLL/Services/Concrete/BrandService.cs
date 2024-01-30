@@ -22,17 +22,24 @@ namespace E_Phone.BLL.Services.Concrete
             _mapper = mapper;
         }
 
-        public async Task CreateBrandAsync(CreateBrandDTO brandDTO)
+        public async Task CreateBrandAsync(CreateBrandDTO createBrandDTO)
         {
-            bool isBranchExist = await _brandRepository.AnyAsync(b => b.BrandName == brandDTO.BrandName);
+            bool isBranchExist = await _brandRepository.AnyAsync(b => b.BrandName == createBrandDTO.BrandName);
             if (isBranchExist)
                 throw new ArgumentException("Aynı isimde bir marka vardır");
-            Brand newBrand = _mapper.Map<Brand>(brandDTO);
 
+            Brand newBrand = _mapper.Map<Brand>(createBrandDTO);
             await _brandRepository.CreateAsync(newBrand);
         }
 
-        public void DeleteBrand(int id) => _brandRepository.Delete(id);
+        public async Task DeleteBrand(int id)
+        {
+            Brand brand = await _brandRepository.GetAsync(b => b.Id == id);
+            if (brand == null)
+                throw new ArgumentException("Brand bulunamadı.");
+
+            _brandRepository.Delete(brand);
+        }
 
         public async Task<List<GetBrandsDTO>> GetAllBrandsAsync()
         {
@@ -44,17 +51,19 @@ namespace E_Phone.BLL.Services.Concrete
         public async Task<GetSingleBrandDTO> GetBrandAsync(int id)
         {
             Brand brand = await _brandRepository.GetAsync(b => b.Id == id);
+            if (brand == null)
+                throw new ArgumentException("Marka bulunamadı");
 
             return _mapper.Map<GetSingleBrandDTO>(brand);
         }
 
-        public async Task UpdateBrandAsync(UpdateBrandDTO brand, int id)
+        public async Task UpdateBrandAsync(UpdateBrandDTO updateBrandDTO, int id)
         {
             Brand selectedBrand = await _brandRepository.GetAsync(b => b.Id == id);
             if (selectedBrand == null)
                 throw new ArgumentException("Bu isimde bir marka yoktur");
-            selectedBrand.BrandName = brand.BrandName;
 
+            selectedBrand.BrandName = updateBrandDTO.BrandName;
             _brandRepository.Update(selectedBrand);
         }
 
