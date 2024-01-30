@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Phone.API.Controllers
 {
-    [Route("[action]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = "User")]
     public class ModelController : ControllerBase
@@ -19,9 +18,7 @@ namespace E_Phone.API.Controllers
             _modelService = modelService;
         }
 
-        [HttpGet]
-        [Route("models/{brandId}")]
-        [ActionName("brands")]
+        [HttpGet("brands/{brandId}/models", Name = "GetAllModels")]
         public async Task<IActionResult> GetAllModels(int brandId)
         {
             List<GetModelsDTO> getModelsDTOs = await _modelService.GetAllModelsAsync(brandId);
@@ -30,8 +27,7 @@ namespace E_Phone.API.Controllers
         }
 
         [HttpGet]
-        [Route("{modelId}")]
-        [ActionName("models")]
+        [Route("models/{modelId}")]
         public async Task<IActionResult> GetModel(int modelId)
         {
             GetSingleModelDTO getSingleModelDTO = await _modelService.GetModelAsync(modelId);
@@ -39,9 +35,7 @@ namespace E_Phone.API.Controllers
             return Ok(getSingleModelDTO);
         }
 
-        [HttpPost]
-        [Route("models/{brandId}")]
-        [ActionName("brands")]
+        [HttpPost("brands/{brandId}/models", Name = "CreateModel")]
         public async Task<IActionResult> CreateModel(int brandId, [FromBody] CreateModelDTO createModelDTO)
         {
             await _modelService.CreateModelAsync(createModelDTO, brandId);
@@ -50,8 +44,7 @@ namespace E_Phone.API.Controllers
         }
 
         [HttpPut]
-        [Route("{modelId}")]
-        [ActionName("models")]
+        [Route("models/{modelId}")]
         public async Task<IActionResult> UpdateModel(int modelId, [FromBody] UpdateModelDTO updateModelDTO)
         {
             await _modelService.UpdateModelAsync(updateModelDTO, modelId);
@@ -60,8 +53,7 @@ namespace E_Phone.API.Controllers
         }
 
         [HttpDelete]
-        [Route("{modelId}")]
-        [ActionName("models")]
+        [Route("models/{modelId}")]
         public async Task<IActionResult> DeleteModel(int modelId)
         {
             await _modelService.DeleteModel(modelId);

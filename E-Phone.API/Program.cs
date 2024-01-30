@@ -97,10 +97,47 @@ namespace E_Phone.API
 
             app.UseHttpsRedirection();
 
+            app.MapControllers();
+
+            app.UseRouting();
+
             app.UseAuthentication();
+
             app.UseAuthorization();
 
-            app.MapControllers();
+            //Özel Endpointler
+            app.UseEndpoints(endpoints =>
+             {
+                 endpoints.MapControllerRoute(
+                     name: "GetAllModels",
+                     pattern: "brands/{brandId}/models",
+                     defaults: new { controller = "Model", action = "GetAllModels" }
+                );
+
+                 endpoints.MapControllerRoute(
+                     name: "CreateModel",
+                     pattern: "brands/{brandId}/models",
+                     defaults: new { controller = "Model", action = "CreateModel" }
+                 );
+
+                 endpoints.MapControllerRoute(
+                     name: "GetAllVersions",
+                     pattern: "models/{modelId}/versions",
+                     defaults: new { controller = "Version", action = "GetAllVersions" }
+                     );
+
+                 endpoints.MapControllerRoute(
+                     name: "CreateVersion",
+                     pattern: "models/{modelId}/versions",
+                     defaults: new { Controllers = "Model", action = "CreateVersion" }
+                     );
+
+                 endpoints.MapControllerRoute(
+                     name: "GetOrders",
+                     pattern: "customers/{customerId}/orders",
+                     defaults: new { Controllers = "Order", action = "GetCustomerOrders" }
+                     );
+             });
 
             app.Run();
         }

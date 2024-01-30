@@ -39,8 +39,7 @@ namespace E_Phone.API.Controllers
             return Ok(getOrdersDTOs);
         }
 
-        [HttpGet("orders/{customerId}")]
-        [ActionName("customers")]
+        [HttpGet("customers/{customerId}/orders", Name = "GetOrders")]
         public async Task<IActionResult> GetCustomerOrders(int customerId)
         {
             List<GetUserOrdersDTO> getUserOrdersDTOs = await _orderService.GetCustomerOrdesAsync(customerId);
@@ -48,8 +47,7 @@ namespace E_Phone.API.Controllers
             return Ok(getUserOrdersDTOs);
         }
 
-        [HttpGet("{orderId}")]
-        [ActionName("orders")]
+        [HttpGet("orders/{orderId}")]
         public async Task<IActionResult> GetOrder(int orderId)
         {
             GetSingleOrderDTO getSingleOrderDTO = await _orderService.GetOrderAsync(orderId);
@@ -57,8 +55,7 @@ namespace E_Phone.API.Controllers
             return Ok(getSingleOrderDTO);
         }
 
-        [HttpPut("{orderId}")]
-        [ActionName("orders")]
+        [HttpPut("orders/{orderId}")]
         public async Task<IActionResult> UpdateOrder(int orderId, [FromBody] UpdateOrderDTO updateOrderDTO)
         {
             await _orderService.UpdateOrderAsync(updateOrderDTO, orderId);
@@ -66,8 +63,7 @@ namespace E_Phone.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("{orderId}")]
-        [ActionName("orders")]
+        [HttpDelete("orders/{orderId}")]
         public IActionResult DeleteOrder(int orderId)
         {
             _orderService.DeleteOrder(orderId);

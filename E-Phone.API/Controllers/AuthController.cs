@@ -8,6 +8,9 @@ using System.Net;
 
 namespace E_Phone.API.Controllers
 {
+    /// <summary>
+    /// falan filan
+    /// </summary>
     [Route("auth")]
     [ApiController]
     public class AuthController : ControllerBase

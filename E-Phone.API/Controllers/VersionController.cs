@@ -5,10 +5,10 @@ using E_Phone.BLL.Services.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace E_Phone.API.Controllers
 {
-    [Route("[action]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = "User")]
     public class VersionController : ControllerBase
@@ -20,9 +20,7 @@ namespace E_Phone.API.Controllers
             _versionService = versionService;
         }
 
-        [HttpGet]
-        [Route("vesions/{modelId}")]
-        [ActionName("models")]
+        [HttpGet("models/{modelId}/versions", Name = "GetAllVersions")]
         public async Task<IActionResult> GetAllVersions(int modelId)
         {
             List<GetVersionsDTO> getVersionsDTOs = await _versionService.GetAllVersionsAsync(modelId);
@@ -31,8 +29,7 @@ namespace E_Phone.API.Controllers
         }
 
         [HttpGet]
-        [Route("{versionId}")]
-        [ActionName("versions")]
+        [Route("versions/{versionId}")]
         public async Task<IActionResult> GetVersion(int versionId)
         {
             GetSingleVersionDTO getSingleVersionDTO = await _versionService.GetVersionAsync(versionId);
@@ -40,9 +37,7 @@ namespace E_Phone.API.Controllers
             return Ok(getSingleVersionDTO);
         }
 
-        [HttpPost]
-        [Route("versions/{modelId}")]
-        [ActionName("models")]
+        [HttpPost("models/{modelID}/versions", Name = "CreateVersion") ]
         public async Task<IActionResult> CreateVersion(int modelId, [FromBody] CreateVersionDTO createVersionDTO)
         {
             await _versionService.CreateVersionAsync(createVersionDTO, modelId);
@@ -51,8 +46,7 @@ namespace E_Phone.API.Controllers
         }
 
         [HttpPut]
-        [Route("{versionId}")]
-        [ActionName("versions")]
+        [Route("versions/{versionId}")]
         public async Task<IActionResult> UpdateVersion(int versionId, [FromBody] UpdateVersionDTO updateVersionDTO)
         {
             await _versionService.UpdateVersionAsync(updateVersionDTO, versionId);
@@ -61,8 +55,7 @@ namespace E_Phone.API.Controllers
         }
 
         [HttpDelete]
-        [Route("{versionId}")]
-        [ActionName("versions")]
+        [Route("versions/{versionId}")]
         public async Task<IActionResult> DeleteVersion(int versionId)
         {
             await _versionService.DeleteVersion(versionId);
