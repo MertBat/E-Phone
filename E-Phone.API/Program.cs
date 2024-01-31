@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using System.Text;
 
 namespace E_Phone.API
@@ -27,7 +28,6 @@ namespace E_Phone.API
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
             //Jwt Ayarlarý
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -47,11 +47,13 @@ namespace E_Phone.API
             });
 
             //Swagger Authorization
-            builder.Services.AddSwaggerGen(c =>
+            builder.Services.AddSwaggerGen(s =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "E-Phone", Version = "v1" });
+                s.SwaggerDoc("v1", new OpenApiInfo { Title = "E-Phone", Version = "v1", Description = "Online Telefon Satýþ Uygulamasý" });
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                s.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
@@ -59,7 +61,7 @@ namespace E_Phone.API
                     In = ParameterLocation.Header,
                 });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
@@ -88,6 +90,8 @@ namespace E_Phone.API
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             var app = builder.Build();
+
+            app.UseStaticFiles();
 
             if (app.Environment.IsDevelopment())
             {

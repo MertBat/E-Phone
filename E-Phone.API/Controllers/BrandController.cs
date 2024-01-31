@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Phone.API.Controllers
 {
+    /// <summary>
+    /// Marka işlemleri
+    /// </summary>
     [Route("brands")]
     [ApiController]
     [Authorize(AuthenticationSchemes = "User")]
@@ -18,6 +21,9 @@ namespace E_Phone.API.Controllers
             _brandService = brandService;
         }
 
+        /// <summary>
+        /// Tüm markaların listelenmesi
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAllBrands()
         {
@@ -26,6 +32,10 @@ namespace E_Phone.API.Controllers
             return Ok(getBrandsDTOs);
         }
 
+        /// <summary>
+        /// Belirli bir markanın detaylarını görüntülenmesi
+        /// </summary>
+        /// <param name="brandId">Id ye göre marka detaylarını görüntüleme</param>
         [HttpGet("{brandId}")]
         public async Task<IActionResult> GetBrand(int brandId)
         {
@@ -34,6 +44,10 @@ namespace E_Phone.API.Controllers
             return Ok(getSingleBrandDTO);
         }
 
+        /// <summary>
+        /// Yeni marka oluşturulması
+        /// </summary>
+        /// <param name="createBrandDTO"><strong>brandName (marka ismi):</strong> Maksimum 50 karekter içerebilir.</param>
         [HttpPost]
         public async Task<IActionResult> CreateBrand([FromBody] CreateBrandDTO createBrandDTO)
         {
@@ -42,6 +56,11 @@ namespace E_Phone.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Belirli bir markanın güncellenmesi
+        /// </summary>
+        /// <param name="brandId">Id ye göre markanın güncellenmesi</param> 
+        /// <param name="updateBrandDTO"><strong>brandName (marka ismi):</strong> Maksimum 50 karekter içerebilir.</param>
         [HttpPut("{brandId}")]
         public async Task<IActionResult> UpdateBrand(int brandId, [FromBody] UpdateBrandDTO updateBrandDTO)
         {
@@ -50,10 +69,14 @@ namespace E_Phone.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Belirli bir markanın silinmesi
+        /// </summary>
+        /// <param name="brandId">Id ye göre markanın silinmesi</param>
         [HttpDelete("{brandId}")]
-        public IActionResult DeleteBrand(int brandId)
+        public async Task<IActionResult> DeleteBrand(int brandId)
         {
-            _brandService.DeleteBrand(brandId);
+           await _brandService.DeleteBrand(brandId);
 
             return Ok();
         }

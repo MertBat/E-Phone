@@ -9,6 +9,9 @@ using System.Xml.Linq;
 
 namespace E_Phone.API.Controllers
 {
+    /// <summary>
+    /// Versiyon işlemleri
+    /// </summary>
     [ApiController]
     [Authorize(AuthenticationSchemes = "User")]
     public class VersionController : ControllerBase
@@ -20,6 +23,11 @@ namespace E_Phone.API.Controllers
             _versionService = versionService;
         }
 
+        /// <summary>
+        /// Versiyonların listelenmesi
+        /// </summary>
+        /// <param name="modelId">Model id ye göre versiyonların listelenmesi</param>
+        /// <returns></returns>
         [HttpGet("models/{modelId}/versions", Name = "GetAllVersions")]
         public async Task<IActionResult> GetAllVersions(int modelId)
         {
@@ -28,6 +36,10 @@ namespace E_Phone.API.Controllers
             return Ok(getVersionsDTOs);
         }
 
+        /// <summary>
+        /// Belirli bir versiyon detayının görüntülenmesi
+        /// </summary>
+        /// <param name="versionId">Id ye göre versiyon detaylarını görüntüleme</param>
         [HttpGet]
         [Route("versions/{versionId}")]
         public async Task<IActionResult> GetVersion(int versionId)
@@ -37,7 +49,15 @@ namespace E_Phone.API.Controllers
             return Ok(getSingleVersionDTO);
         }
 
-        [HttpPost("models/{modelID}/versions", Name = "CreateVersion") ]
+        /// <summary>
+        /// Yeni versiyon oluşturulması
+        /// </summary>
+        /// <param name="modelId">Versiyonun hangi modele ekleneceğini belirtir.</param>
+        /// <param name="createVersionDTO"><strong>storageCapacity (depo kapesitesi):</strong> 0 dan büyük olmalıdır. <br/>
+        /// <strong>price (fiyat):</strong> 0 dan büyük olmalıdır.<br/>
+        /// <strong>stock (stok):</strong> 0 dan büyük olmalıdır. Depo kapasitesinden küçük olmalıdır.<br/>
+        /// </param>
+        [HttpPost("models/{modelId}/versions", Name = "CreateVersion") ]
         public async Task<IActionResult> CreateVersion(int modelId, [FromBody] CreateVersionDTO createVersionDTO)
         {
             await _versionService.CreateVersionAsync(createVersionDTO, modelId);
@@ -45,6 +65,14 @@ namespace E_Phone.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Yeni versiyon oluşturulması
+        /// </summary>
+        /// <param name="versionId">Id ye göre versiyon güncellenmesi</param>
+        /// <param name="updateVersionDTO"><strong>storageCapacity (depo kapesitesi):</strong> 0 dan büyük olmalıdır. <br/>
+        /// <strong>price (fiyat):</strong> 0 dan büyük olmalıdır.<br/>
+        /// <strong>stock (stok):</strong> 0 dan büyük olmalıdır. Depo kapasitesinden küçük olmalıdır.<br/>
+        /// </param>
         [HttpPut]
         [Route("versions/{versionId}")]
         public async Task<IActionResult> UpdateVersion(int versionId, [FromBody] UpdateVersionDTO updateVersionDTO)
@@ -54,6 +82,10 @@ namespace E_Phone.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Belirli bir markanın silinmesi
+        /// </summary>
+        /// <param name="versionId">Id ye göre versiyonun silinmesi</param>
         [HttpDelete]
         [Route("versions/{versionId}")]
         public async Task<IActionResult> DeleteVersion(int versionId)

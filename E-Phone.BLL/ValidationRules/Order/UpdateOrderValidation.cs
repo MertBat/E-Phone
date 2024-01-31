@@ -11,7 +11,8 @@ namespace E_Phone.BLL.ValidationRules.Order
 {
     public class UpdateOrderValidation : AbstractValidator<UpdateOrderDTO>
     {
-        public UpdateOrderValidation() { 
+        public UpdateOrderValidation()
+        {
             RuleFor(update => update.VersionId)
                 .NotEmpty().WithMessage("Id boş olamaz")
                 .GreaterThan(0).WithMessage("ID 0 dan büyük olmalıdır");
@@ -22,7 +23,7 @@ namespace E_Phone.BLL.ValidationRules.Order
 
             RuleFor(update => update.OrderCondition)
                 .NotEmpty().WithMessage("Sipariş durumu boş olamaz")
-                .Must(condition => Enum.IsDefined(typeof(OrderCondition), condition)).WithMessage("sipariş durumu 0,1 veya 2 olabilir. 0 => Beklemekte, 1 => Teslim edildi, 2 => İptal edildi");
+                .Must(condition => Enum.IsDefined(typeof(OrderCondition), condition)).WithMessage("sipariş durumu 0, 1 veya 2 olabilir. 0 => Beklemekte, 1 => Tamamlandı, 2 => İptal edildi");
         }
     }
 }

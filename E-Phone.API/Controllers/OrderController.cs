@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Phone.API.Controllers
 {
-    [Route("[action]")]
+    /// <summary>
+    /// Sipariş işlemelri
+    /// </summary>
     [ApiController]
     [Authorize(AuthenticationSchemes = "User")]
     public class OrderController : ControllerBase
@@ -19,8 +21,14 @@ namespace E_Phone.API.Controllers
             _orderService = orderService;
         }
 
-        [HttpPost]
-        [ActionName("orders")]
+        /// <summary>
+        /// Sipariş oluşturma
+        /// </summary>
+        /// <param name="createOrderDTO">
+        /// <strong>orderCount (sipariş miktarı):</strong> 0 dan büyük bir değer almalıdır.<br/>
+        /// <strong>versionId (versiyon id):</strong> Aktif bir versiyon olmalıdır.
+        /// </param>
+        [HttpPost("orders")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDTO createOrderDTO)
         {
             string tokenHeader = HttpContext.Request.Headers["Authorization"];
@@ -30,8 +38,10 @@ namespace E_Phone.API.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        [ActionName("orders")]
+        /// <summary>
+        /// Bütün siparişleri listeleme
+        /// </summary>
+        [HttpGet("orders")]
         public async Task<IActionResult> GetAllOrders()
         {
             List<GetOrdersDTO> getOrdersDTOs = await _orderService.GetAllOrdersAsync();
@@ -39,6 +49,10 @@ namespace E_Phone.API.Controllers
             return Ok(getOrdersDTOs);
         }
 
+        /// <summary>
+        /// Müşterinin siparişlerini listeleme
+        /// </summary>
+        /// <param name="customerId">Müşteri id ile müşterinin siparişlerini listeleme.</param>
         [HttpGet("customers/{customerId}/orders", Name = "GetOrders")]
         public async Task<IActionResult> GetCustomerOrders(int customerId)
         {
@@ -47,6 +61,10 @@ namespace E_Phone.API.Controllers
             return Ok(getUserOrdersDTOs);
         }
 
+        /// <summary>
+        /// Belirli bir siparişin görüntülenmesi
+        /// </summary>
+        /// <param name="orderId">Id ye göre sipariş detaylarının görüntüleme.</param>
         [HttpGet("orders/{orderId}")]
         public async Task<IActionResult> GetOrder(int orderId)
         {
@@ -55,6 +73,15 @@ namespace E_Phone.API.Controllers
             return Ok(getSingleOrderDTO);
         }
 
+        /// <summary>
+        /// Sipariş değiştirme
+        /// </summary>
+        /// <param name="orderId">Id ye göre siparişin güncellenmesi</param>
+        /// <param name="updateOrderDTO">
+        /// <strong>versionId (versiyon id): </strong> Aktif bir versiyon olmalıdır.<br/>
+        /// <strong>orderCondition (sipariş durumu):</strong> <i> 0:</i> beklemede,<i> 1:</i> tamamlandı,<i> 2:</i> iptal edildi. <br/> 
+        /// <strong>orderCount (sipariş miktarı):</strong> 0 dan büyük bir değer almalıdır. 
+        /// </param>
         [HttpPut("orders/{orderId}")]
         public async Task<IActionResult> UpdateOrder(int orderId, [FromBody] UpdateOrderDTO updateOrderDTO)
         {
@@ -63,10 +90,14 @@ namespace E_Phone.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Belirli bir markanın silinmesi
+        /// </summary>
+        /// <param name="orderId">Id ye göre siparişin silinmesi</param>
         [HttpDelete("orders/{orderId}")]
-        public IActionResult DeleteOrder(int orderId)
+        public async Task<IActionResult> DeleteOrder(int orderId)
         {
-            _orderService.DeleteOrder(orderId);
+           await _orderService.DeleteOrder(orderId);
 
             return Ok();
         }

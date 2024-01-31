@@ -37,7 +37,7 @@ namespace E_Phone.BLL.ValidationRules.Auth
 
             RuleFor(update => update.Name)
                 .NotEmpty().WithMessage("İsim boş geçilemez.")
-                .MinimumLength(50).WithMessage("İsim en az 50 karakter olmalıdır.");
+                .MaximumLength(50).WithMessage("İsim en fazla 50 karakter olmalıdır.");
         }
     }
 }

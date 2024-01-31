@@ -55,6 +55,9 @@ namespace E_Phone.BLL.Services.Concrete
 
         public async Task<List<GetModelsDTO>> GetAllModelsAsync(int brandId)
         {
+            bool isBranchExist = await _brandRepository.AnyAsync(b => b.Id == brandId);
+            if (!isBranchExist)
+                throw new ArgumentException("Marka bulunamadı.");
             List<Model> models = await _modelRepository.GetAllAsync(m=> m.BrandId == brandId);
 
             return _mapper.Map<List<GetModelsDTO>>(models);

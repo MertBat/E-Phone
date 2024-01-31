@@ -12,11 +12,7 @@ namespace E_Phone.BLL.ValidationRules.Order
     {
         public CreateOrderValidation()
         {
-            RuleFor(create => create.UserId)
-                .NotEmpty().WithMessage("Id boş olamaz")
-                .GreaterThan(0).WithMessage("ID 0 dan büyük olmalıdır");
-            
-            RuleFor(create=> create.VersionId)
+            RuleFor(create => create.VersionId)
                 .NotEmpty().WithMessage("Id boş olamaz")
                 .GreaterThan(0).WithMessage("ID 0 dan büyük olmalıdır");
 

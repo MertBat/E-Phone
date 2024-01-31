@@ -51,6 +51,9 @@ namespace E_Phone.BLL.Services.Concrete
 
         public async Task<List<GetVersionsDTO>> GetAllVersionsAsync(int modelId)
         {
+            bool isModelExist = await _modelRepository.AnyAsync(b => b.Id == modelId);
+            if (!isModelExist)
+                throw new ArgumentException("Model bulunamadı.");
             List<Core.Entities.Version> versions = await _versionRepository.GetAllAsync(v => v.ModelId == modelId);
 
             return _mapper.Map<List<GetVersionsDTO>>(versions);

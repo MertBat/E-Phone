@@ -11,6 +11,5 @@ namespace E_Phone.BLL.DTOs.Order
     {
         public int OrderCount { get; set; }
         public int VersionId { get; set; }
-        public int UserId { get; set; }
     }
 }
